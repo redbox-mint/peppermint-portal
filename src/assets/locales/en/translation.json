@@ -28,5 +28,7 @@
   "https___schema_org_birthDate_______https___schema_org_Person_______facet": "Birth Date",
   "id-label": "ID",
   "type-label": "Type",
-  "summary-header": "Summary"
+  "summary-header": "Summary",
+  "@id": "ID",
+  "@type": "Type"
 }

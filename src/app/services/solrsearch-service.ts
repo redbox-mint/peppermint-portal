@@ -118,7 +118,7 @@ export class SolrSearchService implements SearchService {
     if (parentField) {
         data = body[parentField] || {};
     }
-    return new SolrSearchResult(data, params);
+    return new SolrSearchResult(data, params, this.config);
   }
 }
 
@@ -175,8 +175,10 @@ export class SolrSearchResult implements SearchResult {
   results: any[];
   facets: SearchFacet[];
   facetGroupNames: string[];
+  config:any;
 
-  constructor(httpResp: any, params: SearchParams) {
+  constructor(httpResp: any, params: SearchParams, config:any) {
+    this.config = config;
     // parse the SOLR response
     this.rawResponse = httpResp;
     this.numFound = httpResp.response.numFound;
@@ -196,8 +198,10 @@ export class SolrSearchResult implements SearchResult {
             for (var i=0; i < facet_field_val.length; ) {
               const facet_val = facet_field_val[i++];
               const facet_count = facet_field_val[i++];
-              mainFacet.addGroup(facet_val, facet_count);
-              this.facetGroupNames.push(facet_val);
+              if (!_.includes(this.config.ignoreTypes, facet_val)) {
+                mainFacet.addGroup(facet_val, facet_count);
+                this.facetGroupNames.push(facet_val);
+              }
             }
             return false;
           }
@@ -208,7 +212,9 @@ export class SolrSearchResult implements SearchResult {
             for (var i=0; i < maxEntries; ) {
               const facet_val = facet_field_val[i++];
               const facet_count = facet_field_val[i++];
-              mainFacet.addToGroup(facet_field_name, facet_val, facet_count);
+              if (!_.includes(this.config.ignoreTypes, facet_val)) {
+                mainFacet.addToGroup(facet_field_name, facet_val, facet_count);
+              }
             }
           }
         });
@@ -222,7 +228,9 @@ export class SolrSearchResult implements SearchResult {
           for (var i=0; i < maxEntries; ) {
             const facet_val = facet_field_val[i++];
             const facet_count = facet_field_val[i++];
-            values.push(new SolrFacetValue(facet_val, facet_count));
+            if (!_.includes(this.config.ignoreTypes, facet_val)) {
+              values.push(new SolrFacetValue(facet_val, facet_count));
+            }
           }
           const searchFacet = new SolrFacet(facet_field_name, values);
           this.facets.push(searchFacet);

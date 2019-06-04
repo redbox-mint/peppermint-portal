@@ -84,20 +84,30 @@ export class UtilService {
               } catch (e) {
               }
             }
-            wrapperDiv.innerHTML = v;
-            wrapperDiv.innerHTML = this.transformToLink(wrapperDiv.innerHTML);
-            vArr.push(`<li>${wrapperDiv.innerHTML}</li>`)
+            if (!_.isEmpty(v)) {
+              wrapperDiv.innerHTML = v;
+              wrapperDiv.innerHTML = this.transformToLink(wrapperDiv.innerHTML);
+              vArr.push(`<li>${wrapperDiv.innerHTML}</li>`)
+            }
           });
-          wrapperDiv.innerHTML = `<ul>${vArr.join(' ')}</ul>`
-        } else {
-          if (propName == '@id' || propName == 'id') {
-            wrapperDiv.innerHTML = `<a href='search?recordType=exact&searchText=id:${propVal}'>${propVal}</a>`
+          if (!_.isEmpty(vArr)) {
+            wrapperDiv.innerHTML = `<ul>${vArr.join(' ')}</ul>`
           } else {
-            wrapperDiv.innerHTML = propVal;
-            wrapperDiv.innerHTML = this.transformToLink(wrapperDiv.innerHTML);
+            wrapperDiv.innerHTML = ''
+          }
+        } else {
+          if (!_.isEmpty(propVal)) {
+            if (propName == '@id' || propName == 'id') {
+              wrapperDiv.innerHTML = `<a href='search?recordType=exact&searchText=id:${propVal}'>${propVal}</a>`
+            } else {
+              wrapperDiv.innerHTML = propVal;
+              wrapperDiv.innerHTML = this.transformToLink(wrapperDiv.innerHTML);
+            }
           }
         }
-        propertyArr.push(`<p><span class='h6'>${translationService.getFacetHumanLabel(propName)}:</span>${wrapperDiv.innerHTML}</p>`)
+        if (!_.isEmpty(wrapperDiv.innerHTML)) {
+          propertyArr.push(`<p><span class='h6'>${translationService.getFacetHumanLabel(propName)}:</span>${wrapperDiv.innerHTML}</p>`)
+        }
       }
     });
     return propertyArr.join(' ');
