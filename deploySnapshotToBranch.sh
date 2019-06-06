@@ -15,7 +15,7 @@ build() {
   echo "----------------------------------------------------------------------"
   apt-get update; apt-get install wget git -y
   wget -qO- https://raw.githubusercontent.com/creationix/nvm/$NVM_VERSION/install.sh | bash
-  export NG_CLI_ANALYTICS=ci; nvm use $NODE_VERSION; npm install -g @angular/cli@$NG_VERSION yarn@$YARN_VERSION; yarn install; ng build --prod --build-optimizer --output-path build/peppermint
+  export NG_CLI_ANALYTICS=ci; npm install -g @angular/cli@$NG_VERSION yarn@$YARN_VERSION; yarn install; ng build --prod --build-optimizer --output-path build/peppermint
   echo "----------------------------------------------------------------------"
   echo "Build complete..."
   echo "----------------------------------------------------------------------"
