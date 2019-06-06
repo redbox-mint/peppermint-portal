@@ -10,9 +10,15 @@ setup_git() {
 }
 
 build() {
+  echo "----------------------------------------------------------------------"
+  echo "Building app"
+  echo "----------------------------------------------------------------------"
   apt-get update; apt-get install wget git -y
   wget -qO- https://raw.githubusercontent.com/creationix/nvm/$NVM_VERSION/install.sh | bash
-  export NG_CLI_ANALYTICS=ci; export NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"; nvm install $NODE_VERSION; nvm use $NODE_VERSION; npm install -g @angular/cli@$NG_VERSION yarn@$YARN_VERSION; yarn install; ng build --prod --build-optimizer --output-path build/peppermint
+  export NG_CLI_ANALYTICS=ci; nvm use $NODE_VERSION; npm install -g @angular/cli@$NG_VERSION yarn@$YARN_VERSION; yarn install; ng build --prod --build-optimizer --output-path build/peppermint
+  echo "----------------------------------------------------------------------"
+  echo "Build complete..."
+  echo "----------------------------------------------------------------------"
 }
 
 commit_files() {
@@ -29,8 +35,13 @@ upload_files() {
   git remote add build-origin "https://shilob:$GH_TOKEN@github.com/redbox-mint/peppermint-portal"
   git push build-origin dev_build --force
 }
-
+echo "================================================================="
+echo "Building dev_build branch..."
+echo "================================================================="
 setup_git
 build
 commit_files
 upload_files
+echo "================================================================="
+echo "Build dev_build branch done."
+echo "================================================================="
