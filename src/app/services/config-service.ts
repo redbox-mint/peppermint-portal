@@ -19,7 +19,7 @@
 
 import { Injectable, Inject} from '@angular/core';
 import { Location } from '@angular/common';
-import { Http, Response } from '@angular/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Subject } from 'rxjs/Subject';
 
 /**
@@ -33,7 +33,7 @@ export class ConfigService {
   protected config: any;
   protected subjects: any;
 
-  constructor (@Inject(Http) protected http: any, protected location: Location) {
+  constructor (@Inject(HttpClient) protected http: any, protected location: Location) {
     this.subjects = {};
     this.subjects['get'] = new Subject();
     this.initConfig();
@@ -57,15 +57,16 @@ export class ConfigService {
   }
 
   initConfig() {
-    this.http.get(this.location.prepareExternalUrl(`assets/config.json?v=${new Date().getTime()}`)).subscribe((res:any) => {
+    const url = this.location.prepareExternalUrl(`assets/config.json?v=${new Date().getTime()}`);
+    this.http.get(url, {observe:'response'}).subscribe((res:any) => {
       this.config = this.extractData(res);
       console.log(`ConfigService, initialized. `);
       this.emitConfig();
     });
   }
 
-  protected extractData(res: Response, parentField: any = null) {
-    let body = res.json();
+  protected extractData(res: HttpResponse<any>, parentField: any = null) {
+    let body = res.body;
     if (parentField) {
         return body[parentField] || {};
     } else {

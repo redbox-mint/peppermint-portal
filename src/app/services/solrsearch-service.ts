@@ -19,7 +19,7 @@
 
 import { Injectable, Inject} from '@angular/core';
 import { Location } from '@angular/common';
-import { Http, Response } from '@angular/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ConfigService } from './config-service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -37,7 +37,7 @@ export class SolrSearchService implements SearchService {
   protected config: any;
 
   constructor (
-    @Inject(Http) protected http: any,
+    @Inject(HttpClient) protected http: any,
     protected location: Location,
     protected configService: ConfigService
   ) {
@@ -65,7 +65,7 @@ export class SolrSearchService implements SearchService {
     }
     const url = `${configSearch.solrUrl}${_.template(configSearch.mainQuery, opts)()}`;
     console.log(url);
-    return this.http.get(url);
+    return this.http.get(url, {observe:'response'});
   }
 
   public search(searchParam: SearchParams) {
@@ -109,11 +109,11 @@ export class SolrSearchService implements SearchService {
     }
     const url = `${configSearch.solrUrl}${_.template(configSearch.mainQuery, opts)()}`;
     console.log(url);
-    return this.http.get(url);
+    return this.http.get(url, {observe:'response'});
   }
 
-  public extractData(res: Response, parentField: any = null, params: SearchParams = null): SearchResult {
-    let body = res.json();
+  public extractData(res: HttpResponse<any>, parentField: any = null, params: SearchParams = null): SearchResult {
+    let body = res.body;
     let data = body || {};
     if (parentField) {
         data = body[parentField] || {};

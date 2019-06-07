@@ -18,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
+import { HttpResponse } from '@angular/common/http';
 import * as _ from 'lodash';
 
 export interface SearchFacetValue {
@@ -42,7 +42,7 @@ export interface SearchResult {
 
 export interface SearchService {
   search(param:SearchParams): Observable<any>;
-  extractData(res: Response, parentField: any, params: SearchParams): SearchResult;
+  extractData(res: HttpResponse<any>, parentField: any, params: SearchParams): SearchResult;
   searchExact(param:SearchParams): Observable<any>;
 }
 

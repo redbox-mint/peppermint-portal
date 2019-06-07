@@ -51,6 +51,9 @@ You will need to set up your development environment for these changes. See "Dev
 
 ## Developing
 
+### Pre-requisites
+- Node 10.16.0 or greater installation. We recommend using [nvm](https://github.com/nvm-sh/nvm) to manage your Node installations.
+
 ### Quick set up
 - Run as "Quick set up" above, but instead of using the `dev_build` branch, use the branch you want to develop against.
 - Then on the repo directory, run `npm run-script build_dev_watch`

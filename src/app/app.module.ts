@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule} from "@angular/forms";
 
@@ -33,7 +33,7 @@ const appRoutes: Routes = [
     AppComponent
   ],
   imports: [
-    HttpModule,
+    HttpClientModule,
     BrowserModule,
     TranslateI18NextModule,
     RouterModule.forRoot(appRoutes),
