@@ -1,4 +1,4 @@
-FROM nginx:1.15
+FROM nginx:1.17.0
 
 ENV APP_HOME /opt/peppermint-portal
 ENV NVM_VERSION v0.34.0

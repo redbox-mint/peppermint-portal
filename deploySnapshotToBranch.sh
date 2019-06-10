@@ -13,7 +13,7 @@ build() {
   echo "----------------------------------------------------------------------"
   echo "Building app"
   echo "----------------------------------------------------------------------"
-  export NG_CLI_ANALYTICS=ci; nvm use $NODE_VERSION; npm install -g @angular/cli@$NG_VERSION yarn@$YARN_VERSION; yarn install; ng build --prod --build-optimizer --output-path build/peppermint
+  export NG_CLI_ANALYTICS=ci; npm install -g @angular/cli@$NG_VERSION yarn@$YARN_VERSION; yarn install; ng build --prod --build-optimizer --output-path build/peppermint
   echo "----------------------------------------------------------------------"
   echo "Build complete..."
   echo "----------------------------------------------------------------------"
